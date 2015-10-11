@@ -92,9 +92,12 @@
 			url += paramString.join("&");
 
 			return new Promise(function(resolve, reject) {
-				$.get(url).then(function(data) {
+				var p = $.get(url).then(function(data) {
 					resolve(data);
-				}).error(function(err) {
+				}), key;
+				if (typeof(p["error"]) == "function") key = "error";
+				else key = "fail";
+				p[key](function(err) {
 					reject(err);
 				});
 			});
